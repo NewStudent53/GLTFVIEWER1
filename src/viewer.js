@@ -398,24 +398,6 @@ export class Viewer {
     const state = this.state;
     const lights = this.lights;
 
-    if (state.SpotLight && !lights.length) {
-      this.addLights();
-    } else if (!state.SpotLight && lights.length) {
-      this.removeLights();
-    }
-
-    if (state.HemisphereLight && !lights.length) {
-      this.addLights();
-    } else if (!state.HemisphereLight && lights.length) {
-      this.removeLights();
-    }
-
-    if (state.DirectionLight && !lights.length) {
-      this.addLights();
-    } else if (!state.DirectionLight && lights.length) {
-      this.removeLights();
-    }
-
     if (state.AmbientLight && !lights.length) {
       this.addLights();
     } else if (!state.AmbientLight && lights.length) {
@@ -428,24 +410,6 @@ export class Viewer {
   updateLights2 () {
     const state = this.state;
     const lights = this.lights;
-
-    if (state.SpotLight && !lights.length) {
-      this.addLights();
-    } else if (!state.SpotLight && lights.length) {
-      this.removeLights();
-    }
-
-    if (state.HemisphereLight && !lights.length) {
-      this.addLights();
-    } else if (!state.HemisphereLight && lights.length) {
-      this.removeLights();
-    }
-
-    if (state.AmbientLight && !lights.length) {
-      this.addLights();
-    } else if (!state.AmbientLight && lights.length) {
-      this.removeLights();
-    }
 
     if (state.DirectionLight && !lights.length) {
       this.addLights();
@@ -460,24 +424,6 @@ export class Viewer {
     const state = this.state;
     const lights = this.lights;
 
-    if (state.HemisphereLight && !lights.length) {
-      this.addLights();
-    } else if (!state.HemisphereLight && lights.length) {
-      this.removeLights();
-    }
-
-    if (state.AmbientLight && !lights.length) {
-      this.addLights();
-    } else if (!state.AmbientLight && lights.length) {
-      this.removeLights();
-    }
-
-    if (state.DirectionLight && !lights.length) {
-      this.addLights();
-    } else if (!state.DirectionLight && lights.length) {
-      this.removeLights();
-    }
-
     if (state.SpotLight && !lights.length) {
       this.addLights();
     } else if (!state.SpotLight && lights.length) {
@@ -490,24 +436,6 @@ export class Viewer {
   updateLights4 () {
     const state = this.state;
     const lights = this.lights;
-
-    if (state.AmbientLight && !lights.length) {
-      this.addLights();
-    } else if (!state.AmbientLight && lights.length) {
-      this.removeLights();
-    }
-
-    if (state.DirectionLight && !lights.length) {
-      this.addLights();
-    } else if (!state.DirectionLight && lights.length) {
-      this.removeLights();
-    }
-
-    if (state.SpotLight && !lights.length) {
-      this.addLights();
-    } else if (!state.SpotLight && lights.length) {
-      this.removeLights();
-    }
 
     if (state.HemisphereLight && !lights.length) {
       this.addLights();
