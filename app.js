@@ -51494,7 +51494,7 @@ var Viewer = /*#__PURE__*/function () {
       directColor: 0xFFFFFF,
       bgColor1: '#ffffff',
       bgColor2: '#353535',
-      AmbientLight: false,
+      AddLights: false,
       DirectionLight: false,
       SpotLight: false,
       HemisphereLight: false,
@@ -51680,14 +51680,14 @@ var Viewer = /*#__PURE__*/function () {
       this.scene.add(object);
       this.content = object;
       this.state.addLights = true;
-      this.state.AmbientLight = false;
+      this.state.AddLights = false;
       this.state.DirectionLight = false;
       this.state.HemisphereLight = false;
       this.state.SpotLight = false;
       this.content.traverse(function (node) {
         if (node.isLight) {
           _this2.state.addLights = false;
-          _this2.state.AmbientLight = false;
+          _this2.state.AddLights = false;
           _this2.state.DirectionLight = false;
           _this2.state.HemisphereLight = false;
           _this2.state.SpotLight = false;
@@ -51781,85 +51781,9 @@ var Viewer = /*#__PURE__*/function () {
       var state = this.state;
       var lights = this.lights;
 
-      if (state.SpotLight && !lights.length) {
-        this.addLights();
-      } else if (!state.SpotLight && lights.length) {
-        this.removeLights();
-      }
-
       if (state.HemisphereLight && !lights.length) {
         this.addLights();
       } else if (!state.HemisphereLight && lights.length) {
-        this.removeLights();
-      }
-
-      if (state.DirectionLight && !lights.length) {
-        this.addLights();
-      } else if (!state.DirectionLight && lights.length) {
-        this.removeLights();
-      }
-
-      if (state.AmbientLight && !lights.length) {
-        this.addLights();
-      } else if (!state.AmbientLight && lights.length) {
-        this.removeLights();
-      }
-
-      this.renderer.toneMappingExposure = state.exposure;
-    }
-  }, {
-    key: "updateLights2",
-    value: function updateLights2() {
-      var state = this.state;
-      var lights = this.lights;
-
-      if (state.SpotLight && !lights.length) {
-        this.addLights();
-      } else if (!state.SpotLight && lights.length) {
-        this.removeLights();
-      }
-
-      if (state.HemisphereLight && !lights.length) {
-        this.addLights();
-      } else if (!state.HemisphereLight && lights.length) {
-        this.removeLights();
-      }
-
-      if (state.AmbientLight && !lights.length) {
-        this.addLights();
-      } else if (!state.AmbientLight && lights.length) {
-        this.removeLights();
-      }
-
-      if (state.DirectionLight && !lights.length) {
-        this.addLights();
-      } else if (!state.DirectionLight && lights.length) {
-        this.removeLights();
-      }
-
-      this.renderer.toneMappingExposure = state.exposure;
-    }
-  }, {
-    key: "updateLights3",
-    value: function updateLights3() {
-      var state = this.state;
-      var lights = this.lights;
-
-      if (state.HemisphereLight && !lights.length) {
-        this.addLights();
-      } else if (!state.HemisphereLight && lights.length) {
-        this.removeLights();
-      }
-
-      if (state.AmbientLight && !lights.length) {
-        this.addLights();
-      } else if (!state.AmbientLight && lights.length) {
-        this.removeLights();
-      }
-
-      if (state.DirectionLight && !lights.length) {
-        this.addLights();
-      } else if (!state.DirectionLight && lights.length) {
         this.removeLights();
       }
 
@@ -51869,35 +51793,15 @@ var Viewer = /*#__PURE__*/function () {
         this.removeLights();
       }
 
-      this.renderer.toneMappingExposure = state.exposure;
-    }
-  }, {
-    key: "updateLights4",
-    value: function updateLights4() {
-      var state = this.state;
-      var lights = this.lights;
-
-      if (state.AmbientLight && !lights.length) {
-        this.addLights();
-      } else if (!state.AmbientLight && lights.length) {
-        this.removeLights();
-      }
-
       if (state.DirectionLight && !lights.length) {
         this.addLights();
       } else if (!state.DirectionLight && lights.length) {
         this.removeLights();
       }
 
-      if (state.SpotLight && !lights.length) {
+      if (state.AddLights && !lights.length) {
         this.addLights();
-      } else if (!state.SpotLight && lights.length) {
-        this.removeLights();
-      }
-
-      if (state.HemisphereLight && !lights.length) {
-        this.addLights();
-      } else if (!state.HemisphereLight && lights.length) {
+      } else if (!state.AddLights && lights.length) {
         this.removeLights();
       }
 
@@ -52117,7 +52021,7 @@ var Viewer = /*#__PURE__*/function () {
       envMapCtrl.onChange(function () {
         return _this9.updateEnvironment();
       });
-      [lightFolder.add(this.state, 'exposure', 0, 2), lightFolder.add(this.state, 'AmbientLight').listen(), lightFolder.add(this.state, 'DirectionLight').listen(), lightFolder.add(this.state, 'SpotLight').listen(), lightFolder.add(this.state, 'HemisphereLight').listen()].forEach(function (ctrl) {
+      [lightFolder.add(this.state, 'exposure', 0, 2), lightFolder.add(this.state, 'AddLights').listen()].forEach(function (ctrl) {
         return ctrl.onChange(function () {
           return _this9.updateLights();
         });
@@ -52134,21 +52038,21 @@ var Viewer = /*#__PURE__*/function () {
       var directionFolder = gui.addFolder('THREE.DirectionLight');
       [directionFolder.add(this.state, 'directIntensity', 0, 4), directionFolder.addColor(this.state, 'directColor')].forEach(function (ctrl) {
         return ctrl.onChange(function () {
-          return _this9.updateLights2();
+          return _this9.updateLights();
         });
       }); // Point Lights
 
       var PointFolder = gui.addFolder('THREE.SpotLight');
       [PointFolder.addColor(this.state, 'color'), PointFolder.add(this.state, 'intensity', 0, 40), PointFolder.add(this.state, 'distance', -50, 50), PointFolder.add(this.state, 'angle', -30, 30)].forEach(function (ctrl) {
         return ctrl.onChange(function () {
-          return _this9.updateLights3();
+          return _this9.updateLights();
         });
       }); // Hemisphere Lights
 
       var HemisphereFolder = gui.addFolder('THREE.HemisphereLight');
       [HemisphereFolder.addColor(this.state, 'skycolor'), HemisphereFolder.addColor(this.state, 'groundcolor'), HemisphereFolder.add(this.state, 'hemintensity', 0, 100)].forEach(function (ctrl) {
         return ctrl.onChange(function () {
-          return _this9.updateLights4();
+          return _this9.updateLights();
         });
       }); // Animation controls.
 
@@ -76894,7 +76798,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64924" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59035" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
