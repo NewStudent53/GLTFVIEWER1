@@ -18,6 +18,8 @@ import {
   Vector3,
   WebGLRenderer,
   sRGBEncoding,
+  PointLight,
+  PointLightShadow,
 } from 'three';
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -33,6 +35,7 @@ import { GUI } from 'dat.gui';
 import { environments } from '../assets/environment/index.js';
 import { createBackground } from '../lib/three-vignette.js';
 import { SpotLight } from 'three';
+import { PointLightHelper } from 'three.js';
 
 const DEFAULT_CAMERA = '[default]';
 
@@ -63,7 +66,7 @@ export class Viewer {
       environment: options.preset === Preset.ASSET_GENERATOR
         ? environments.find((e) => e.id === 'footprint-court').name
         : environments[1].name,
-      background: false,
+      background: true,
       playbackSpeed: 1.0,
       actionStates: {},
       camera: DEFAULT_CAMERA,
@@ -82,16 +85,18 @@ export class Viewer {
       bgColor1: '#ffffff',
       bgColor2: '#353535',
       AddLights: false,
-      DirectionLight: false,
-      SpotLight: false,
-      HemisphereLight: false,
       skycolor: 0xffffbb,
       groundcolor: 0x080820,
       hemintensity: 1,
       color: 0xFFFFFF,
       intensity: 1,
       distance: 1,
-      angle: Math.PI /3
+      angle: Math.PI /3,
+      pointcolor: 0xFFFFFF,
+      pointintensity: 1,
+      x: 1,
+      y: 1,
+      z: 1
     };
 
     this.prevTime = 0;
@@ -451,11 +456,16 @@ export class Viewer {
     this.defaultCamera.add(light3);
 
     const light4 = new SpotLight(state.color, state.intensity, state.distance, state.angle);
-    light4.position.set(10,100,10);
-    light4.name = 'point_light';
+    light4.position.set(0.5,0,0.866);
+    light4.name = 'spot_light';
     this.defaultCamera.add(light4);
 
-    this.lights.push(light1, light2, light3, light4);
+    const light5 = new PointLight(state.pointcolor, state.pointintensity);
+    light5.position.set(0.5,0,0.866);
+    light5.name = 'point_light';
+    this.defaultCamera.add( light5 );
+    
+    this.lights.push(light1, light2, light3, light4, light5);
   }
 
   removeLights () {
@@ -624,13 +634,13 @@ export class Viewer {
     ].forEach((ctrl) => ctrl.onChange(() => this.updateLights()));
 
 
-    // Point Lights
-    const PointFolder = gui.addFolder('THREE.SpotLight');
+    // Spot Lights
+    const SpotFolder = gui.addFolder('THREE.SpotLight');
     [
-      PointFolder.addColor(this.state, 'color'),
-      PointFolder.add(this.state, 'intensity', 0, 40),
-      PointFolder.add(this.state, 'distance', -50, 50),
-      PointFolder.add(this.state, 'angle', -30, 30)
+      SpotFolder.addColor(this.state, 'color'),
+      SpotFolder.add(this.state, 'intensity', 0, 40),
+      SpotFolder.add(this.state, 'distance', -50, 50),
+      SpotFolder.add(this.state, 'angle', -30, 30)
     ].forEach((ctrl) => ctrl.onChange(() => this.updateLights()));
 
     // Hemisphere Lights
@@ -640,6 +650,15 @@ export class Viewer {
       HemisphereFolder.addColor(this.state, 'groundcolor'),
       HemisphereFolder.add(this.state, 'hemintensity', 0, 100)
     ].forEach((ctrl) => ctrl.onChange(() => this.updateLights()));
+
+    // Point Lights
+    const PointFolder = gui.addFolder('THREE.PointLight');
+    [
+      PointFolder.addColor(this.state, 'pointcolor'),
+      PointFolder.add(this.state, 'pointintensity', 0, 100)
+    ].forEach((ctrl) => ctrl.onChange(() => this.updateLights()));
+
+    PointLight
 
     // Animation controls.
     this.animFolder = gui.addFolder('Animation');
