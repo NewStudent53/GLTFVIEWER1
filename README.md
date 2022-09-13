@@ -1,5 +1,5 @@
 # GLTF3dviewer
-version IV
+version IX
 
 Once downloaded, do the following
 1)npm install
