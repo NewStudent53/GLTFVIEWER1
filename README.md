@@ -6,4 +6,6 @@ Once downloaded, do the following
 2)npm run dev
 
 # Viewer.js
-On the gui.section, in case the user would like to see the Pointlight option, unlock it and save the changes.
+-FIX BUGS
+-Lights are working once again
+-PointLight has been added
