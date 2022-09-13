@@ -81,7 +81,7 @@ export class Viewer {
       directColor: 0xFFFFFF,
       bgColor1: '#ffffff',
       bgColor2: '#353535',
-      AmbientLight: false,
+      AddLights: false,
       DirectionLight: false,
       SpotLight: false,
       HemisphereLight: false,
@@ -303,7 +303,7 @@ export class Viewer {
     this.content = object;
 
     this.state.addLights = true;
-    this.state.AmbientLight = false;
+    this.state.AddLights = false;
     this.state.DirectionLight = false;
     this.state.HemisphereLight = false;
     this.state.SpotLight = false;
@@ -311,7 +311,7 @@ export class Viewer {
     this.content.traverse((node) => {
       if (node.isLight) {
         this.state.addLights = false;
-        this.state.AmbientLight = false;
+        this.state.AddLights = false;
         this.state.DirectionLight = false;
         this.state.HemisphereLight = false;
         this.state.SpotLight = false;
@@ -398,31 +398,11 @@ export class Viewer {
     const state = this.state;
     const lights = this.lights;
 
-    if (state.AmbientLight && !lights.length) {
+    if (state.HemisphereLight && !lights.length) {
       this.addLights();
-    } else if (!state.AmbientLight && lights.length) {
+    } else if (!state.HemisphereLight && lights.length) {
       this.removeLights();
     }
-
-    this.renderer.toneMappingExposure = state.exposure;
-  }
-
-  updateLights2 () {
-    const state = this.state;
-    const lights = this.lights;
-
-    if (state.DirectionLight && !lights.length) {
-      this.addLights();
-    } else if (!state.DirectionLight && lights.length) {
-      this.removeLights();
-    }
-
-    this.renderer.toneMappingExposure = state.exposure;
-  }
-
-  updateLights3 () {
-    const state = this.state;
-    const lights = this.lights;
 
     if (state.SpotLight && !lights.length) {
       this.addLights();
@@ -430,22 +410,20 @@ export class Viewer {
       this.removeLights();
     }
 
-    this.renderer.toneMappingExposure = state.exposure;
-  }
-
-  updateLights4 () {
-    const state = this.state;
-    const lights = this.lights;
-
-    if (state.HemisphereLight && !lights.length) {
+    if (state.DirectionLight && !lights.length) {
       this.addLights();
-    } else if (!state.HemisphereLight && lights.length) {
+    } else if (!state.DirectionLight && lights.length) {
+      this.removeLights();
+    }
+
+    if (state.AddLights && !lights.length) {
+      this.addLights();
+    } else if (!state.AddLights && lights.length) {
       this.removeLights();
     }
 
     this.renderer.toneMappingExposure = state.exposure;
   }
-
 
   addLights () {
     const state = this.state;
@@ -626,10 +604,7 @@ export class Viewer {
     envMapCtrl.onChange(() => this.updateEnvironment());
     [
       lightFolder.add(this.state, 'exposure', 0, 2),
-      lightFolder.add(this.state, 'AmbientLight').listen(),
-      lightFolder.add(this.state, 'DirectionLight').listen(),
-      lightFolder.add(this.state, 'SpotLight').listen(),
-      lightFolder.add(this.state, 'HemisphereLight').listen()
+      lightFolder.add(this.state, 'AddLights').listen()
     ].forEach((ctrl) => ctrl.onChange(() => this.updateLights()));
     lightFolder.open()
 
@@ -646,7 +621,7 @@ export class Viewer {
     [
       directionFolder.add(this.state, 'directIntensity', 0, 4), 
       directionFolder.addColor(this.state, 'directColor')
-    ].forEach((ctrl) => ctrl.onChange(() => this.updateLights2()));
+    ].forEach((ctrl) => ctrl.onChange(() => this.updateLights()));
 
 
     // Point Lights
@@ -656,7 +631,7 @@ export class Viewer {
       PointFolder.add(this.state, 'intensity', 0, 40),
       PointFolder.add(this.state, 'distance', -50, 50),
       PointFolder.add(this.state, 'angle', -30, 30)
-    ].forEach((ctrl) => ctrl.onChange(() => this.updateLights3()));
+    ].forEach((ctrl) => ctrl.onChange(() => this.updateLights()));
 
     // Hemisphere Lights
     const HemisphereFolder = gui.addFolder('THREE.HemisphereLight');
@@ -664,7 +639,7 @@ export class Viewer {
       HemisphereFolder.addColor(this.state, 'skycolor'),
       HemisphereFolder.addColor(this.state, 'groundcolor'),
       HemisphereFolder.add(this.state, 'hemintensity', 0, 100)
-    ].forEach((ctrl) => ctrl.onChange(() => this.updateLights4()));
+    ].forEach((ctrl) => ctrl.onChange(() => this.updateLights()));
 
     // Animation controls.
     this.animFolder = gui.addFolder('Animation');
