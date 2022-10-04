@@ -93280,9 +93280,9 @@ var Viewer = /*#__PURE__*/function () {
       angle: Math.PI / 3,
       pointcolor: 0xFFFFFF,
       pointintensity: 1,
-      x: 1,
-      y: 1,
-      z: 1
+      x: Math.PI / 1,
+      y: Math.PI / 1,
+      z: Math.PI / 1
     };
     this.prevTime = 0;
     this.stats = new _statsModule.default();
@@ -93815,36 +93815,53 @@ var Viewer = /*#__PURE__*/function () {
         return ctrl.onChange(function () {
           return _this9.updateLights();
         });
-      }); // Direction Lights
+      });
+      var state = new _three.DirectionalLight(0xffffff);
+      this.scene.add(state);
+      var helper = new _three.DirectionalLightHelper(state, 5);
+      this.scene.add(helper); // Direction Lights
 
       var directionFolder = gui.addFolder('THREE.DirectionLight');
-      [directionFolder.add(this.state, 'directIntensity', 0, 4), directionFolder.addColor(this.state, 'directColor')].forEach(function (ctrl) {
-        return ctrl.onChange(function () {
-          return _this9.updateLights();
-        });
-      }); // Spot Lights
-
-      var SpotFolder = gui.addFolder('THREE.SpotLight');
-      [SpotFolder.addColor(this.state, 'color'), SpotFolder.add(this.state, 'intensity', 0, 40), SpotFolder.add(this.state, 'distance', -50, 50), SpotFolder.add(this.state, 'angle', -30, 30)].forEach(function (ctrl) {
-        return ctrl.onChange(function () {
-          return _this9.updateLights();
-        });
-      }); // Hemisphere Lights
-
-      var HemisphereFolder = gui.addFolder('THREE.HemisphereLight');
-      [HemisphereFolder.addColor(this.state, 'skycolor'), HemisphereFolder.addColor(this.state, 'groundcolor'), HemisphereFolder.add(this.state, 'hemintensity', 0, 100)].forEach(function (ctrl) {
-        return ctrl.onChange(function () {
-          return _this9.updateLights();
-        });
-      }); // Point Lights
-
-      var PointFolder = gui.addFolder('THREE.PointLight');
-      [PointFolder.addColor(this.state, 'pointcolor'), PointFolder.add(this.state, 'pointintensity', 0, 100)].forEach(function (ctrl) {
+      [directionFolder.add(state, 'intensity', 0, 4), directionFolder.addColor(state, 'color'), directionFolder.add(state.position, 'x', -50, 50), directionFolder.add(state.position, 'y', -50, 50), directionFolder.add(state.position, 'z', -50, 50)].forEach(function (ctrl) {
         return ctrl.onChange(function () {
           return _this9.updateLights();
         });
       });
-      _three.PointLight; // Animation controls.
+      var state2 = new _three.SpotLight(0xffffff);
+      this.scene.add(state2);
+      var helper2 = new _three.SpotLightHelper(state2);
+      this.scene.add(helper2); // Spot Lights
+
+      var SpotFolder = gui.addFolder('THREE.SpotLight');
+      [SpotFolder.addColor(state2, 'color'), SpotFolder.add(state2, 'intensity', 0, 40), SpotFolder.add(state2, 'distance', -50, 50), SpotFolder.add(state2, 'angle', -30, 30), SpotFolder.add(state2.position, 'x', -10, 10), SpotFolder.add(state2.position, 'y', -10, 10), SpotFolder.add(state2.position, 'z', -10, 10)].forEach(function (ctrl) {
+        return ctrl.onChange(function () {
+          return _this9.updateLights();
+        });
+      });
+      var state3 = new _three.HemisphereLight();
+      this.scene.add(state3);
+      var helper3 = new _three.HemisphereLightHelper(state3);
+      this.scene.add(helper3); // Hemisphere Lights
+
+      var HemisphereFolder = gui.addFolder('THREE.HemisphereLight');
+      [HemisphereFolder.add(state3, 'intensity', 0, 100), HemisphereFolder.add(state3.position, 'x', -100, 100), HemisphereFolder.add(state3.position, 'y', -100, 100), HemisphereFolder.add(state3.position, 'z', -100, 100)].forEach(function (ctrl) {
+        return ctrl.onChange(function () {
+          return _this9.updateLights();
+        });
+      });
+      var state4 = new _three.PointLight(0x0, 0);
+      state4.intensity = 0;
+      state4.angle = Math.PI / 3;
+      this.scene.add(state4);
+      var helper4 = new _three2.PointLightHelper(state4);
+      this.scene.add(helper4); // Point Lights
+
+      var PointFolder = gui.addFolder('THREE.PointLight');
+      [PointFolder.addColor(state4, 'color'), PointFolder.add(state4, 'intensity', 0, 100), PointFolder.add(state4.position, 'x', -10, 10), PointFolder.add(state4.position, 'y', -10, 10), PointFolder.add(state4.position, 'z', -10, 10)].forEach(function (ctrl) {
+        return ctrl.onChange(function () {
+          return _this9.updateLights();
+        });
+      }); // Animation controls.
 
       this.animFolder = gui.addFolder('Animation');
       this.animFolder.domElement.style.display = 'none';
@@ -118588,7 +118605,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65075" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60758" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
