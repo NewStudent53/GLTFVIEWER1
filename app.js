@@ -93808,7 +93808,22 @@ var Viewer = /*#__PURE__*/function () {
           return _this9.updateLights();
         });
       });
-      lightFolder.open(); // Ambient Lights
+      lightFolder.open();
+      document.addEventListener('mousemove', onDocumentMouseMove);
+      var mouseX = 0;
+      var mouseY = 0;
+      var targetX = 0;
+      var targetY = 0;
+      var windowHalfX = window.innerWidth / 2;
+      var windowHalfY = window.innerHeight / 2;
+      targetX = mouseX * .001;
+      targetY = mouseY * .001;
+
+      function onDocumentMouseMove(event) {
+        mouseX = event.clientX - windowHalfX;
+        mouseY = event.clientY - windowHalfY;
+      } // Ambient Lights
+
 
       var ambientFolder = gui.addFolder('THREE.AmbientLight');
       [ambientFolder.add(this.state, 'ambientIntensity', 0, 50), ambientFolder.addColor(this.state, 'ambientColor')].forEach(function (ctrl) {
@@ -118605,7 +118620,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60758" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51963" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
