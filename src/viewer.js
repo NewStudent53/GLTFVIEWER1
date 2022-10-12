@@ -20,6 +20,9 @@ import {
   sRGBEncoding,
   PointLight,
   PointLightShadow,
+  DirectionalLightHelper,
+  SpotLightHelper,
+  HemisphereLightHelper,
 } from 'three';
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -94,9 +97,9 @@ export class Viewer {
       angle: Math.PI /3,
       pointcolor: 0xFFFFFF,
       pointintensity: 1,
-      x: 1,
-      y: 1,
-      z: 1
+      x: Math.PI /1,
+      y: Math.PI /1,
+      z: Math.PI /1
     };
 
     this.prevTime = 0;
@@ -618,7 +621,24 @@ export class Viewer {
     ].forEach((ctrl) => ctrl.onChange(() => this.updateLights()));
     lightFolder.open()
 
-    
+    document.addEventListener('mousemove', onDocumentMouseMove)
+    let mouseX = 0
+    let mouseY = 0
+
+    let targetX = 0
+    let targetY = 0
+
+    const windowHalfX = window.innerWidth / 2;
+    const windowHalfY = window.innerHeight / 2;
+
+    targetX = mouseX * .001
+    targetY = mouseY * .001
+
+    function onDocumentMouseMove(event){
+      mouseX = (event.clientX - windowHalfX)
+      mouseY = (event.clientY - windowHalfY)
+    }
+
     // Ambient Lights
     const ambientFolder = gui.addFolder('THREE.AmbientLight');
     [
@@ -626,39 +646,68 @@ export class Viewer {
       ambientFolder.addColor(this.state, 'ambientColor')
     ].forEach((ctrl) => ctrl.onChange(() => this.updateLights()));
 
+    const state = new DirectionalLight(0xffffff)
+    this.scene.add(state);
+    const helper = new DirectionalLightHelper(state, 5)
+    this.scene.add(helper)
+
     // Direction Lights
     const directionFolder = gui.addFolder('THREE.DirectionLight');
     [
-      directionFolder.add(this.state, 'directIntensity', 0, 4), 
-      directionFolder.addColor(this.state, 'directColor')
+      directionFolder.add(state, 'intensity', 0, 4), 
+      directionFolder.addColor(state, 'color'),
+      directionFolder.add(state.position, 'x', -50 ,50),
+      directionFolder.add(state.position, 'y', -50, 50),
+      directionFolder.add(state.position, 'z', -50, 50)
     ].forEach((ctrl) => ctrl.onChange(() => this.updateLights()));
 
+    const state2 = new SpotLight(0xffffff)
+    this.scene.add(state2);
+    const helper2 = new SpotLightHelper(state2)
+    this.scene.add(helper2)
 
     // Spot Lights
     const SpotFolder = gui.addFolder('THREE.SpotLight');
     [
-      SpotFolder.addColor(this.state, 'color'),
-      SpotFolder.add(this.state, 'intensity', 0, 40),
-      SpotFolder.add(this.state, 'distance', -50, 50),
-      SpotFolder.add(this.state, 'angle', -30, 30)
+      SpotFolder.addColor(state2, 'color'),
+      SpotFolder.add(state2, 'intensity', 0, 40),
+      SpotFolder.add(state2, 'distance', -50, 50),
+      SpotFolder.add(state2, 'angle', -30, 30),
+      SpotFolder.add(state2.position, 'x', -10, 10),
+      SpotFolder.add(state2.position, 'y', -10, 10),
+      SpotFolder.add(state2.position, 'z', -10, 10)
     ].forEach((ctrl) => ctrl.onChange(() => this.updateLights()));
+
+    const state3 = new HemisphereLight()
+    this.scene.add(state3);
+    const helper3 = new HemisphereLightHelper(state3)
+    this.scene.add(helper3)
 
     // Hemisphere Lights
     const HemisphereFolder = gui.addFolder('THREE.HemisphereLight');
     [
-      HemisphereFolder.addColor(this.state, 'skycolor'),
-      HemisphereFolder.addColor(this.state, 'groundcolor'),
-      HemisphereFolder.add(this.state, 'hemintensity', 0, 100)
+      HemisphereFolder.add(state3, 'intensity', 0, 100),
+      HemisphereFolder.add(state3.position, 'x', -100, 100),
+      HemisphereFolder.add(state3.position, 'y', -100, 100),
+      HemisphereFolder.add(state3.position, 'z', -100, 100)
     ].forEach((ctrl) => ctrl.onChange(() => this.updateLights()));
+
+    const state4 = new PointLight(0x0, 0)
+    state4.intensity = 0
+    state4.angle = Math.PI / 3
+    this.scene.add(state4);
+    const helper4 = new PointLightHelper(state4)
+    this.scene.add(helper4)
 
     // Point Lights
     const PointFolder = gui.addFolder('THREE.PointLight');
     [
-      PointFolder.addColor(this.state, 'pointcolor'),
-      PointFolder.add(this.state, 'pointintensity', 0, 100)
+      PointFolder.addColor(state4, 'color'),
+      PointFolder.add(state4, 'intensity', 0, 100),
+      PointFolder.add(state4.position, 'x', -10, 10),
+      PointFolder.add(state4.position, 'y', -10, 10),
+      PointFolder.add(state4.position, 'z', -10, 10)
     ].forEach((ctrl) => ctrl.onChange(() => this.updateLights()));
-
-    PointLight
 
     // Animation controls.
     this.animFolder = gui.addFolder('Animation');
