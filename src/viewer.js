@@ -23,6 +23,9 @@ import {
   DirectionalLightHelper,
   SpotLightHelper,
   HemisphereLightHelper,
+  BoxGeometry,
+  MeshBasicMaterial,
+  Mesh,
 } from 'three';
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -99,7 +102,8 @@ export class Viewer {
       pointintensity: 1,
       x: Math.PI /1,
       y: Math.PI /1,
-      z: Math.PI /1
+      z: Math.PI /1,
+      opacity: 0.1
     };
 
     this.prevTime = 0;
@@ -620,6 +624,24 @@ export class Viewer {
       lightFolder.add(this.state, 'AddLights').listen()
     ].forEach((ctrl) => ctrl.onChange(() => this.updateLights()));
     lightFolder.open()
+
+    // Mesh Commands
+    const MeshMaterial = gui.addFolder(' MeshMaterial-Textures ');
+    [
+    //  MeshMaterial.addColor( this.state, 'color' ).onChange( handleColorChange( material.color, true ) ),
+		//	MeshMaterial.addColor( this.state, 'emissive' ).onChange( handleColorChange( material.emissive, true ) ),
+
+    //  MeshMaterial.add( this.state, 'roughness', 0, 1 ),
+		//	MeshMaterial.add( this.state, 'metalness', 0, 1 ),
+		//	MeshMaterial.add( this.state, 'flatShading' ).onChange( needsUpdate( material, geometry ) ),
+		//	MeshMaterial.add( this.state, 'wireframe' ),
+		//	MeshMaterial.add( this.state, 'vertexColors' ).onChange( needsUpdate( material, geometry ) ),
+		//	MeshMaterial.add( this.state, 'fog' ).onChange( needsUpdate( material, geometry ) ),
+		//	MeshMaterial.add( this.state, 'envMaps', envMapKeysPBR ).onChange( updateTexture( material, 'envMap', envMaps ) ),
+		//	MeshMaterial.add( this.state, 'map', diffuseMapKeys ).onChange( updateTexture( material, 'map', diffuseMaps ) ),
+		//	MeshMaterial.add( this.state, 'roughnessMap', roughnessMapKeys ).onChange( updateTexture( material, 'roughnessMap', roughnessMaps ) ),
+		//	MeshMaterial.add( this.state, 'alphaMap', alphaMapKeys ).onChange( updateTexture( material, 'alphaMap', alphaMaps ) )
+    ]
 
     document.addEventListener('mousemove', onDocumentMouseMove)
     let mouseX = 0
