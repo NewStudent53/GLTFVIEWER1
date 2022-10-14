@@ -93282,7 +93282,8 @@ var Viewer = /*#__PURE__*/function () {
       pointintensity: 1,
       x: Math.PI / 1,
       y: Math.PI / 1,
-      z: Math.PI / 1
+      z: Math.PI / 1,
+      opacity: 0.1
     };
     this.prevTime = 0;
     this.stats = new _statsModule.default();
@@ -93808,7 +93809,22 @@ var Viewer = /*#__PURE__*/function () {
           return _this9.updateLights();
         });
       });
-      lightFolder.open();
+      lightFolder.open(); // Mesh Commands
+
+      var MeshMaterial = gui.addFolder(' MeshMaterial-Textures ');
+      [//  MeshMaterial.addColor( this.state, 'color' ).onChange( handleColorChange( material.color, true ) ),
+        //	MeshMaterial.addColor( this.state, 'emissive' ).onChange( handleColorChange( material.emissive, true ) ),
+        //  MeshMaterial.add( this.state, 'roughness', 0, 1 ),
+        //	MeshMaterial.add( this.state, 'metalness', 0, 1 ),
+        //	MeshMaterial.add( this.state, 'flatShading' ).onChange( needsUpdate( material, geometry ) ),
+        //	MeshMaterial.add( this.state, 'wireframe' ),
+        //	MeshMaterial.add( this.state, 'vertexColors' ).onChange( needsUpdate( material, geometry ) ),
+        //	MeshMaterial.add( this.state, 'fog' ).onChange( needsUpdate( material, geometry ) ),
+        //	MeshMaterial.add( this.state, 'envMaps', envMapKeysPBR ).onChange( updateTexture( material, 'envMap', envMaps ) ),
+        //	MeshMaterial.add( this.state, 'map', diffuseMapKeys ).onChange( updateTexture( material, 'map', diffuseMaps ) ),
+        //	MeshMaterial.add( this.state, 'roughnessMap', roughnessMapKeys ).onChange( updateTexture( material, 'roughnessMap', roughnessMaps ) ),
+        //	MeshMaterial.add( this.state, 'alphaMap', alphaMapKeys ).onChange( updateTexture( material, 'alphaMap', alphaMaps ) )
+      ];
       document.addEventListener('mousemove', onDocumentMouseMove);
       var mouseX = 0;
       var mouseY = 0;
@@ -118620,7 +118636,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51963" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53002" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
